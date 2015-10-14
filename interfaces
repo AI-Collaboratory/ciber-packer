@@ -1,0 +1,23 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+auto eth0
+iface eth0 inet dhcp
+  dns-domain ext
+  dns-nameservers 192.168.0.1
+  post-up route del default dev eth0
+
+auto eth1
+iface eth1 inet dhcp
+  dns-domain rep
+  dns-nameservers 192.168.1.1
+  post-up route del default dev eth1
+
+# The primary network interface
+auto eth2
+iface eth2 inet dhcp
+  up route add default gw 192.168.122.1 dev eth2
