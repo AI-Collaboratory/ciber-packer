@@ -12,7 +12,7 @@
         {
             "type": "qemu",
             "qemu_binary": "/usr/libexec/qemu-kvm",
-            "qemuargs": [ [ "-smp" , "{{user `ncpu`}}"] ],
+            "qemuargs": [ [ "-smp" , "{{user `ncpu`}}"], ["-vnc", ":5"] ],
             "format": "qcow2",
             "disk_size": "{{ user `disk_size`}}",
             "net_device": "virtio-net-pci",
