@@ -1,0 +1,68 @@
+{
+    "variables": {
+        "hostname": null,
+        "user": null,
+        "password": null,
+        "disk_size": "32000",
+        "ncpu": "8"
+    },
+
+    "builders":
+    [
+        {
+            "type": "qemu",
+            "qemu_binary": "/usr/libexec/qemu-kvm",
+            "qemuargs": [ [ "-smp" , "{{user `ncpu`}}"], ["-vnc", ":5"] ],
+            "format": "qcow2",
+            "disk_size": "{{ user `disk_size`}}",
+            "net_device": "virtio-net-pci",
+
+            "iso_url": "http://nl3.releases.ubuntu.com/16.04/ubuntu-16.04-server-amd64.iso",
+            "iso_checksum": "23e97cd5d4145d4105fbf29878534049",
+            "iso_checksum_type": "md5",
+
+            "http_directory": "http",
+
+            "vm_name": "{{user `hostname`}}",
+            "ssh_username": "{{user `user`}}",
+            "ssh_password": "{{user `password`}}",
+            "ssh_wait_timeout": "60m",
+            "shutdown_command": "shutdown -P now",
+
+            "boot_wait": "2s",
+            "boot_command": [
+              "<enter>",
+              "<f6><esc>",
+              "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+              "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+              "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+              "<bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+              "/install/vmlinuz",
+              " initrd=/install/initrd.gz",
+              " auto-install/enable=true",
+              " debconf/priority=critical",
+              " netcfg/get_hostname={{user `hostname`}}",
+              " passwd/user-fullname string {{user `user`}}",
+              " passwd/username string {{user `user`}}",
+              " passwd/user-password password {{user `password`}}",
+              " passwd/user-password-again password {{user `password`}}",
+              " preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg",
+              " <enter>"
+            ]
+        }
+    ],
+
+    "provisioners": [
+        {
+            "type": "shell",
+            "inline": ["cd /tmp; wget http://{{ .HTTPIP }}:{{ .HTTPPort }}/interfaces"]
+        },
+        {
+            "type": "shell",
+            "execute_command": "echo '{{user `password`}}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+            "scripts": [
+                "scripts/network.sh"
+            ]
+        }
+    ]
+}
