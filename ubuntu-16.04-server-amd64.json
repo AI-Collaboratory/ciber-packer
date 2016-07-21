@@ -2,7 +2,7 @@
     "variables": {
         "hostname": null,
         "domain": null,
-        "fullname": null,
+        "fullname": "",
         "user": null,
         "password": null,
         "disk_size": "32000",
@@ -96,7 +96,7 @@
           "cp /tmp/purge-unneeded-kernels.sh /root/purge-unneeded-kernels.sh",
           "chown root:root /root/purge-unneeded-kernels.sh",
           "chmod 0755 /root/purge-unneeded-kernels.sh",
-          "(crontab -l 2>/dev/null; echo \"@reboot /root/purge-unneeded-kernels.sh\") | crontab -"
+          "(crontab -l 2>/dev/null; echo \"@reboot /root/purge-unneeded-kernels.sh\") | crontab -",
           "cp /tmp/interfaces /etc/network/interfaces",
           "chmod u=rw,g=r,o=r /etc/network/interfaces",
           "echo '%sudo    ALL=(ALL)  NOPASSWD:ALL' >> /etc/sudoers"
