@@ -5,19 +5,19 @@
 auto lo
 iface lo inet loopback
 
+# The primary network interface
 auto ens3
 iface ens3 inet dhcp
-  dns-domain ext
-  dns-nameservers 192.168.0.1
-  post-up route del default dev ens3
+  up route add default gw 192.168.122.1 dev ens3
 
 auto ens4
 iface ens4 inet dhcp
-  dns-domain rep
-  dns-nameservers 192.168.1.1
+  dns-domain ext
+  dns-nameservers 192.168.0.1
   post-up route del default dev ens4
 
-# The primary network interface
 auto ens5
 iface ens5 inet dhcp
-  up route add default gw 192.168.122.1 dev ens5
+  dns-domain rep
+  dns-nameservers 192.168.1.1
+  post-up route del default dev ens5
