@@ -15,11 +15,12 @@
     "builders":
     [
         {
-            "vm_name": "{{ user `hostname` }}.qcow2",
+            "vm_name": "{{ user `hostname` }}.raw",
             "type": "qemu",
             "accelerator": "kvm",
             "output_directory": "{{ user `images_dir` }}/{{ user `hostname` }}",
             "qemu_binary": "/usr/libexec/qemu-kvm",
+            "headless": true,
             "qemuargs": [ [ "-smp" , "{{ user `ncpu` }}" ], ["-m", "{{user `memory`}}M"] ],
             "format": "raw",
             "disk_size": "{{ user `disk_size`}}",
@@ -104,13 +105,13 @@
       }
     ],
 
-    "post-processors": [
+    "_post-processors": [
       {
         "type": "shell-local",
         "only": ["qemu"],
         "inline": [
           "chmod -R a+rw {{ user `images_dir` }}/{{ user `hostname` }}",
-          "virt-install --import -n {{ user `hostname` }} -r {{ user `memory` }} --vcpus {{ user `ncpu` }} --disk path={{ user `images_dir` }}/{{ user `hostname` }}/{{ user `hostname` }}.qcow2,device=disk,bus=virtio --network network=default --network bridge=ext0 --network bridge=rep0"
+          "virt-install --import -n {{ user `hostname` }} -r {{ user `memory` }} --vcpus {{ user `ncpu` }} --disk path={{ user `images_dir` }}/{{ user `hostname` }}/{{ user `hostname` }}.raw,device=disk,bus=virtio --network network=default --network bridge=ext0 --network bridge=rep0"
         ]
       }
     ]
