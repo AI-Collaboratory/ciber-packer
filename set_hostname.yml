@@ -1,0 +1,15 @@
+---
+- name: Update Hostname
+  hosts: all
+  become: yes
+  # This playbook sets up a specific hostname on a new machine that was created
+  # by the Packer template. This allows cloning of template machines.
+  # ansible-playbook -i <template hostname>, -e hostname=<new guest hostname>
+  tasks:
+  - replace: dest=/etc/hosts regexp='(\s+){{ inventory_hostname_short }}(\s+.*)?$' replace='\1{{ hostname }}\2' backup=yes
+  - replace: dest=/etc/hosts regexp='(\s+){{ inventory_hostname_short }}(\.\w*)' replace='\1{{ hostname }}\2' backup=yes
+  - copy:
+      dest: /etc/hostname
+      content: |
+        {{ hostname }}
+  - hostname: name={{ hostname }}

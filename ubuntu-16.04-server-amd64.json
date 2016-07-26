@@ -9,7 +9,7 @@
         "memory": "32768",
         "ncpu": "8",
         "interface": "ens3",
-        "images_dir": "/export/vm"
+        "images_dir": "/tmp"
     },
 
     "builders":
@@ -18,8 +18,6 @@
             "vm_name": "{{ user `hostname` }}.raw",
             "type": "qemu",
             "accelerator": "kvm",
-            "output_directory": "{{ user `images_dir` }}/{{ user `hostname` }}",
-            "qemu_binary": "/usr/libexec/qemu-kvm",
             "headless": true,
             "qemuargs": [ [ "-smp" , "{{ user `ncpu` }}" ], ["-m", "{{user `memory`}}M"] ],
             "format": "raw",
@@ -105,6 +103,12 @@
       }
     ],
 
+    "post-processors": [
+      {
+        "type": "compress",
+        "output": "{{ user `hostname` }}.raw.gz"
+      }
+    ],
     "_post-processors": [
       {
         "type": "shell-local",
