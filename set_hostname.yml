@@ -6,10 +6,16 @@
   # by the Packer template. This allows cloning of template machines.
   # ansible-playbook -i <template hostname>, -e hostname=<new guest hostname>
   tasks:
-  - replace: dest=/etc/hosts regexp='(\s+){{ inventory_hostname_short }}(\s+.*)?$' replace='\1{{ hostname }}\2' backup=yes
-  - replace: dest=/etc/hosts regexp='(\s+){{ inventory_hostname_short }}(\.\w*)' replace='\1{{ hostname }}\2' backup=yes
-  - copy:
-      dest: /etc/hostname
-      content: |
-        {{ hostname }}
-  - hostname: name={{ hostname }}
+    - replace: dest=/etc/hosts regexp='(\s+){{ inventory_hostname_short }}(\s+.*)?$' replace='\1{{ hostname }}\2' backup=yes
+      notify: reboot
+    - replace: dest=/etc/hosts regexp='(\s+){{ inventory_hostname_short }}(\.\w*)' replace='\1{{ hostname }}\2' backup=yes
+      notify: reboot
+    - copy:
+        dest: /etc/hostname
+        content: |
+          {{ hostname }}
+      notify: reboot
+    - hostname: name={{ hostname }}
+  handlers:
+    - name: reboot
+      command: /sbin/reboot

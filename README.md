@@ -87,4 +87,17 @@ virt-clone --connect=qemu+tcp://<user>@<virtual host>/system -o <my host> -n <ne
 ansible-playbook -i <my host>, -e hostname=<new guest hostname>
 ```
 
-1. Repeat as needed!
+1. Repeat as needed! WARNING: Do not start multiple clones at the same time. They will all have the same hostname until you follow these steps, and DNS will break.
+
+# Using Ansible to Change Passwords on Many Hosts
+The password you used in your template is powerful and as your template gets older, you may want to change it as it proliferates on many templated systems.
+
+1. Generate new password hash:
+```shell
+$ python3 -c 'import crypt; print(crypt.crypt("<your new password>", crypt.mksalt(crypt.METHOD_SHA512)))'
+```
+
+1. Use the Ansible User module to update passwords on selected hosts:
+```shell
+$ ansible all -m user -k -a "name=<my user> password=<new hashed password>"
+```
