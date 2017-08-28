@@ -16,6 +16,8 @@
           {{ hostname }}
       notify: reboot
     - hostname: name={{ hostname }}
+    - name: Make sure DNS resolution uses the cluster DNS server on ens4
+      lineinfile: dest=/etc/resolvconf/interface-order insertafter="hso*" line="ens4*"
   handlers:
     - name: reboot
       command: /sbin/reboot

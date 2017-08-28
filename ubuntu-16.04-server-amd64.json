@@ -5,7 +5,7 @@
         "fullname": "",
         "user": null,
         "password": null,
-        "disk_size": "32000",
+        "disk_size": "40000",
         "memory": "32768",
         "ncpu": "8",
         "interface": "ens3",
@@ -26,8 +26,8 @@
             "machine_type": "pc",
             "skip_compaction": true,
 
-            "iso_url": "http://nl3.releases.ubuntu.com/16.04.1/ubuntu-16.04.1-server-amd64.iso",
-            "iso_checksum": "d2d939ca0e65816790375f6826e4032f",
+            "iso_url": "http://nl3.releases.ubuntu.com/16.04/ubuntu-16.04.3-server-amd64.iso",
+            "iso_checksum": "10fcd20619dce11fe094e960c85ba4a9",
             "iso_checksum_type": "md5",
 
             "http_directory": "http",

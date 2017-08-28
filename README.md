@@ -9,7 +9,7 @@ The packer command will create a machine and auto-install Ubuntu 16.04 Server wi
 * Scripted purging of old kernels from /boot after reboot
 * Ready for Ansible plays (python-simplejson package installed)
 
-The resulting image will be placed in /export/vm/<my host>/<my host>.raw
+The resulting image will be placed in /export/vm/\<my host>/\<my host>.raw
 It will be imported into Qemu/Libvirt via the virt-install command with all three CI-BER networks on these devices:
 
 * ens3 - external network (NAT) (default gateway)
@@ -80,17 +80,17 @@ If you are using this image as a template for all new guest machines, then you n
 virt-clone --connect=qemu+tcp://<user>@<virtual host>/system -o <my host> -n <new guest hostname> -f /export/vm/<new guest hostname>.raw
 ```
 
-1. Start your clone in virt-manager. It is now running as the correct name in KVM, but the hostname is set to <my host> and this appears in the DHCP DNS.
+1. Start your clone in virt-manager. It is now running as the correct name in KVM, but the hostname is set to \<my host> and this appears in the DHCP DNS.
 
-1. Run the set_hostname.yml playbook to configure the hostname of your new guest. Your SSH configuration must be capable of reaching the clone at it's <my host> address. Add more SSH options as appropriate:
+1. Run the set_hostname.yml playbook to configure the hostname of your new guest. Your SSH configuration must be capable of reaching the clone at it's \<my host> address. Add more SSH options as appropriate:
 ```shell
-ansible-playbook -i <my host>, -e hostname=<new guest hostname>
+ansible-playbook -k -i <my host>, -e hostname=<new guest hostname> set_hostname.yml
 ```
 
-1. Repeat as needed! WARNING: Do not start multiple clones at the same time. They will all have the same hostname until you follow these steps, and DNS will break.
+1. Repeat as needed! WARNING: Do not start multiple clones at the same time, as they will all have the same hostname (and DNS will break) until you follow these steps.
 
 # Using Ansible to Change Passwords on Many Hosts
-The password you used in your template is powerful and as your template gets older, you may want to change it as it proliferates on many templated systems.
+The password you used in your template is powerful and as your template gets older, you may want to change it as it proliferates on many template systems.
 
 1. Generate new password hash:
 ```shell
