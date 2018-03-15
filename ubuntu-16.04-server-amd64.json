@@ -17,6 +17,10 @@
         {
             "vm_name": "{{ user `hostname` }}.raw",
             "type": "qemu",
+
+            "output_directory": "{{ user `images_dir` }}/{{ user `hostname` }}",
+            "qemu_binary": "/usr/libexec/qemu-kvm",
+
             "accelerator": "kvm",
             "headless": true,
             "qemuargs": [ [ "-smp" , "{{ user `ncpu` }}" ], ["-m", "{{user `memory`}}M"] ],
