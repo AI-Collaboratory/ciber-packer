@@ -6,8 +6,8 @@
         "user": null,
         "password": null,
         "disk_size": "40000",
-        "memory": "32768",
-        "ncpu": "8",
+        "memory": "8192",
+        "ncpu": "4",
         "interface": "ens3",
         "images_dir": "/tmp"
     },
